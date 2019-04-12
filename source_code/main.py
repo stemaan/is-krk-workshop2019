@@ -3,6 +3,8 @@ import folium
 import overpy
 from constants import RADIUS, TAG, QUERY_TEMPLATE
 
+from source_code.constants import NTH_POINT
+
 api = overpy.Overpass()
 
 with open('route.geojson', encoding='utf-8') as geojson:
@@ -24,7 +26,7 @@ my_map = folium.Map(location=center, zoom_start=6)
 folium.PolyLine(coordinates).add_to(my_map)
 
 # query every 500th point (from 4464) which is about 75 km for this route
-for latitude, longitude in coordinates[::500]:
+for latitude, longitude in coordinates[::NTH_POINT]:
     result = api.query(
         QUERY_TEMPLATE.format(
             tag=TAG, radius=RADIUS, lat=latitude, lon=longitude
@@ -36,4 +38,4 @@ for latitude, longitude in coordinates[::500]:
         folium.map.Marker([node.lat, node.lon],
                           popup=node.tags.get('brand', TAG)).add_to(my_map)
 
-my_map.save('map.html')
+my_map.save('map3.html')
